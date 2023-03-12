@@ -109,6 +109,31 @@ const mutation = new GraphQLObjectType({
         return Client.findByIdAndRemove(args.id);
       },
     },
+    // Update a client
+    updateClient: {
+      type: ClientType,
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+        name: { type: GraphQLString },
+        email: { type: GraphQLString },
+        phone: { type: GraphQLString },
+      },
+
+      resolve(parent, args) {
+        return Client.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              name: args.name,
+              email: args.email,
+              phone: args.phone,
+            },
+          },
+          { new: true }
+        );
+      },
+    },
+
     // Add a project
     addProject: {
       type: ProjectType,
